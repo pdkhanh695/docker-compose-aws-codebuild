@@ -1,5 +1,9 @@
+
 # Build Stage 
 FROM elixir:alpine AS app_builder
+
+# Set up Nginx & copy the file from nginx.conf
+COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf
 
 # Set environment variables for building the application
 ENV MIX_ENV=prod \

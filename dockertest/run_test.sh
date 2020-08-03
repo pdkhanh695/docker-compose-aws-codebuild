@@ -41,9 +41,11 @@ mix dialyzer
 mix coveralls.html
 
 # echo "## checking format"
+# Check format base on .formatter.exs file 
 mix format --check-formatted
 
 # echo "## run credo for linting"
+# for static code analysis
 mix credo --strict
 
 # echo "## running tests"
