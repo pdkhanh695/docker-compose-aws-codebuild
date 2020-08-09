@@ -24,8 +24,8 @@ services:
     environment:
       - POSTGRES_DB=dev_db
       - POSTGRES_PASSWORD=postgres_pass
-    volumes: 
-      - ./postgresvol:/var/lib/postgresql/data #persist data even if container shuts down
+    # volumes: 
+    #   - ./postgresvol:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
