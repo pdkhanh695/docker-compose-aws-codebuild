@@ -11,5 +11,6 @@ defmodule PocElixirDockerAppWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: PocElixirDockerAppWeb.Schema
 
     forward "/", Absinthe.Plug, schema: PocElixirDockerAppWeb.Schema
+    get "/", PageController, :index
   end
 end

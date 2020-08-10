@@ -20,7 +20,8 @@ phases:
       - echo Entered the pre_build phase ...
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region us-east-1)
-      - REPOSITORY_URI=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-testdockerelixir
+      - REPOSITORY_URI_nignx=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-poc-nginx
+      - REPOSITORY_URI_app=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-poc-app
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
@@ -28,20 +29,27 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Entered the build phase ...
-      - echo Building the Docker image...       
-      - docker build -t $REPOSITORY_URI:latest 
-        --build-arg APP_PORT=$VAR_APP_PORT \
-        --build-arg APP_HOSTNAME=$VAR_APP_HOSTNAME \
-        --build-arg DB_USER=$VAR_DB_USER \
-        --build-arg DB_PASSWORD=$VAR_DB_PASSWORD \
-        --build-arg DB_HOST=$VAR_DB_HOST \
-        --build-arg SECRET_KEY_BASE=$VAR_SECRET_KEY_BASE 
-        .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG    
+      - echo Building the Docker image...         
+      - echo Build image completed on `date`
+      - echo Start running docker-compose in detach mode 
+      - APP_PORT=$VAR_APP_PORT \
+      - APP_HOSTNAME=$VAR_APP_HOSTNAME \
+      - DB_PASSWORD=$VAR_DB_PASSWORD \
+      - DB_USER=$VAR_DB_USER \
+      - DB_HOST=$VAR_DB_HOST \
+      - SECRET_KEY_BASE=$VAR_SECRET_KEY_BASE \
+      - IMAGE_APP=$REPOSITORY_URI_app \
+      - APP_TAG=$IMAGE_TAG \
+      - IMAGE_NGINX=$REPOSITORY_URI_nginx \
+      - NGINX_TAG=$IMAGE_TAG \
+      - docker-compose build 
+      - echo Pushing the Docker image...
+      - docker tag $REPOSITORY_URI_app:latest $REPOSITORY_URI_app:$IMAGE_TAG  
+      - docker tag $REPOSITORY_URI_nginx:latest $REPOSITORY_URI_nginx:$IMAGE_TAG  
   post_build:
     run-as: root
     commands:
       - echo Entered the post_build phase ...
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_nginx:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_app:$IMAGE_TAG
+

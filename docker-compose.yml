@@ -1,0 +1,14 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./nginx
+    image: ${IMAGE_NGINX}:${NGINX_TAG}
+    ports:
+      - 80:80
+    links:
+      - app
+  app:
+    build:
+      context: .
+    image: ${IMAGE_APP}:${APP_TAG}

@@ -21,6 +21,6 @@ config :poc_elixir_docker_app,
 config :poc_elixir_docker_app, PocElixirDockerApp.Repo,
   username: db_user,
   password: db_password,
-  database: "db_prod",
+  database: "nginx_demoprod",
   hostname: db_host,
   pool_size: 10
