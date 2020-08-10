@@ -12,3 +12,4 @@ services:
     build:
       context: .
     image: ${IMAGE_APP}:${APP_TAG}
+    
