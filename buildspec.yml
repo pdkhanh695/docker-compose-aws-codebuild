@@ -31,12 +31,12 @@ phases:
       - echo Entered the build phase ...
       - echo Building the Docker image...         
       - echo Start running docker-compose in detach mode 
-      - APP_PORT=$VAR_APP_PORT \
-      - APP_HOSTNAME=$VAR_APP_HOSTNAME \
-      - DB_PASSWORD=$VAR_DB_PASSWORD \
-      - DB_USER=$VAR_DB_USER \
-      - DB_HOST=$VAR_DB_HOST \
-      - SECRET_KEY_BASE=$VAR_SECRET_KEY_BASE \
+      # - APP_PORT=$VAR_APP_PORT \
+      # - APP_HOSTNAME=$VAR_APP_HOSTNAME \
+      # - DB_PASSWORD=$VAR_DB_PASSWORD \
+      # - DB_USER=$VAR_DB_USER \
+      # - DB_HOST=$VAR_DB_HOST \
+      # - SECRET_KEY_BASE=$VAR_SECRET_KEY_BASE \
       - IMAGE_APP=$REPOSITORY_URI_app \
       - APP_TAG=$IMAGE_TAG \
       - IMAGE_NGINX=$REPOSITORY_URI_nginx \
@@ -51,4 +51,6 @@ phases:
       - echo Entered the post_build phase ...
       - docker push $REPOSITORY_URI_nginx:$IMAGE_TAG
       - docker push $REPOSITORY_URI_app:$IMAGE_TAG
-
+      - printf '[{"name":"khanh_app","imageUri":"%s"}, {"name":"khanh_nginx","imageUri":"%s"}]' $REPOSITORY_URI_app:$IMAGE_TAG, $REPOSITORY_URI_nginx:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
