@@ -10,7 +10,7 @@ services:
       - app
   app:
     build:
-      context: .
+      context: ./app
       args:
         - APP_PORT=${APP_PORT}
         - APP_HOSTNAME=${APP_HOSTNAME}
