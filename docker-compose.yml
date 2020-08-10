@@ -21,4 +21,3 @@ services:
     image: ${IMAGE_APP}:${APP_TAG}
 
 
-
