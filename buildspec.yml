@@ -42,15 +42,15 @@ phases:
       - IMAGE_NGINX=$REPOSITORY_URI_nginx \
       - NGINX_TAG=$IMAGE_TAG \
       - docker-compose build 
-      - echo Pushing the Docker image...
       #- docker tag $REPOSITORY_URI_app:latest $REPOSITORY_URI_app:$IMAGE_TAG  
       #- docker tag $REPOSITORY_URI_nginx:latest $REPOSITORY_URI_nginx:$IMAGE_TAG  
   post_build:
     run-as: root
     commands:
       - echo Entered the post_build phase ...
+      - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI_nginx:$IMAGE_TAG
       - docker push $REPOSITORY_URI_app:$IMAGE_TAG
-      - printf '[{"name":"khanh_app","imageUri":"%s"}, {"name":"khanh_nginx","imageUri":"%s"}]' $REPOSITORY_URI_app:$IMAGE_TAG, $REPOSITORY_URI_nginx:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"khanh_app","imageUri":"%s"},{"name":"khanh_nginx","imageUri":"%s"}]' $REPOSITORY_URI_app:$IMAGE_TAG $REPOSITORY_URI_nginx:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
