@@ -20,7 +20,7 @@ phases:
       - echo Entered the pre_build phase ...
       - echo Logging in to Amazon ECR...
       - $(aws ecr get-login --no-include-email --region us-east-1)
-      - REPOSITORY_URI_nignx=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-poc-nginx
+      - REPOSITORY_URI_nginx=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-poc-nginx
       - REPOSITORY_URI_app=756081003265.dkr.ecr.us-east-1.amazonaws.com/khanh-poc-app
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
@@ -30,7 +30,6 @@ phases:
       - echo Build started on `date`
       - echo Entered the build phase ...
       - echo Building the Docker image...         
-      - echo Build image completed on `date`
       - echo Start running docker-compose in detach mode 
       - APP_PORT=$VAR_APP_PORT \
       - APP_HOSTNAME=$VAR_APP_HOSTNAME \
