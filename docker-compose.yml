@@ -19,5 +19,6 @@ services:
         - DB_HOST=${DB_HOST}
         - SECRET_KEY_BASE=${SECRET_KEY_BASE}
     image: ${IMAGE_APP}:${APP_TAG}
+    ports: 4000:4000
 
 
