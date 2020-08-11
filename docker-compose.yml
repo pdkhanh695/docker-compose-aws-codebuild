@@ -1,24 +1,44 @@
 version: '3'
+
 services:
-  nginx:
-    build:
-      context: ./nginx
-    image: ${IMAGE_NGINX}:${NGINX_TAG}
+
+  # Proxies requests to internal services
+  reverse-proxy:
+    image: nginx:1.18
+    container_name: reverse_proxy
+    depends_on:
+      - react
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-    links:
+
+  react: 
+    image: react
+    container_name: react
+    build: 
+      context: ./react
+    depends_on:
       - app
+    ports:
+      - 8080:80
+    restart: on-failure
+    
   app:
+    image: app #${IMAGE_APP}:${APP_TAG}
+    container_name: app
     build:
       context: ./app
       args:
-        - APP_PORT=${APP_PORT}
-        - APP_HOSTNAME=${APP_HOSTNAME}
-        - DB_USER=${DB_USER}
-        - DB_PASSWORD=${DB_PASSWORD}
-        - DB_HOST=${DB_HOST}
-        - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-    image: ${IMAGE_APP}:${APP_TAG}
-    ports: 4000:4000
+        - APP_PORT=4000 #${APP_PORT}
+        - APP_HOSTNAME=localhost #${APP_HOSTNAME}
+        - DB_USER=postgres #${DB_USER}
+        - DB_PASSWORD=postgres #${DB_PASSWORD}
+        - DB_HOST=postgresql.chjup0ji0a5y.us-east-1.rds.amazonaws.com #${DB_HOST}
+        - SECRET_KEY_BASE=FgpNsLszr+jdqyiHytZQNZ+FXUCK1yIUJEPUOUtJXEZK91ju/jFaGjwYaQDSQCkM #${SECRET_KEY_BASE}
+    ports: 
+      - 4000:4000
+    restart: on-failure
 
 
